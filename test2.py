@@ -1,48 +1,59 @@
 import pygame as game
 import random as rand
+game.init()
+#Classes-----------
 
-#Classes:--------------
-class POINT():
-    def __init__(self):
-        self.radius = 5
-        self.xval = rand.randint(0, 500)
-        self.yval = rand.randint(0, 500)
-        self.pos = game.Vector2(self.xval, self.yval)
-        self.surface = game.display.get_surface()
-    
-    def drawPoint(self):
-        game.draw.circle(self.surface, (0, 0, 0), self.pos, self.radius)
-#----------------------
+
+
+
+
+#------------------
+
 
 def canvasFunc(Width, Height):
     Canvas = game.display.set_mode((Width, Height))
     game.display.set_caption("Canvas")
+    game.display.toggle_fullscreen()
     return Canvas
-
 def InitiatorFunc():
-    Canvas = canvasFunc(500, 500)
-    FPS = 60
+    Canvas = canvasFunc(1920, 1200)
+    FPS = 144
     clock = game.time.Clock()
     switch = True
-
-    #Class instances:-----
-    point = POINT()
-    #---------------------
+    draging = False
+    center = [1920/2, 1200/2]
+    radius = 10
+    fontTest = game.font.Font("SansSerifCollection.ttf", 16)
+    textTest = fontTest.render(f"Center: x:{center[0]}  y:{center[1]}", True, (0, 0, 0), None)
 
     while switch:
+        crect = game.rect.Rect(center[0] - radius, center[1] - radius, radius*2, radius*2)
         for event in game.event.get():
             if event.type == game.QUIT:
                 switch = False
-    
+            elif event.type == game.MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    xpos, ypos = event.pos
+                    if crect.collidepoint(event.pos):
+                        draging = True
+                        offsetxpos = center[0] - xpos
+                        offsetypos = center[1] - ypos
+            
+            elif event.type == game.MOUSEBUTTONUP:
+                if event.button == 1:
+                    draging = False
+            
+            elif event.type == game.MOUSEMOTION:
+                if draging:
+                    xpos, ypos = event.pos
+                    center[0] = xpos + offsetxpos
+                    center[1] = ypos + offsetypos
         #Main code goes here:
         Canvas.fill((171, 171, 171))
-        point.drawPoint()
+        game.draw.circle(Canvas, "red", tuple(center), radius)
         #--------------------
-
         game.display.update()
         clock.tick(FPS)
     return None
 
-# def main(Canvas):
-#     Canvas.fill((171, 171, 171))
 InitiatorFunc()

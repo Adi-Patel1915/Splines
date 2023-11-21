@@ -17,11 +17,10 @@ class POINT:
 
     def Draw(self):
         game.draw.circle(Canvas, self.color, tuple(self.center), self.radius)
-        game.draw.rect(Canvas, "light green", self.hitbox, 1)
+        #game.draw.rect(Canvas, "light green", self.hitbox, 1)
 
 #=====================================
 
-#class ALINE():
 #------------------
 
 Canvas = game.display.set_mode((500, 500))
@@ -54,8 +53,21 @@ def dragChecker(Point : POINT, Events):
                     Point.center[1] = mouseYpos + Point.offsetypos
                     Point.updateHitbox()
 
+
+def CollisionDetection(Pt1 : POINT, Pt2 : POINT):
+    Collision = game.Rect.colliderect(Pt1.hitbox, Pt2.hitbox)
+
+    if Collision:
+        Pt1.color = "green"
+        Pt2.color = "green"
+    else:
+        Pt1.color = (16, 12, 8)
+        Pt2.color = (16, 12, 8) 
+
 def main():
-    Points = [POINT([rand.randint(0, 499), rand.randint(0, 499)]) for i in range(10)]
+    #Points = [POINT([rand.randint(0, 499), rand.randint(0, 499)]) for i in range(5)]
+    Point1 = POINT([100, 100])
+    Point2 = POINT([200, 200])
     FPS = 144
     clock = game.time.Clock()
     switch = True
@@ -65,10 +77,15 @@ def main():
         for event in events:
             if event.type == game.QUIT:
                 switch = False
-        dragcheckerlst = [dragChecker(point, events) for point in Points]
+        #dragcheckerlst = [dragChecker(point, events) for point in Points]
+        dragChecker(Point1, events)
+        dragChecker(Point2, events)
+        CollisionDetection(Point1, Point2)
         Canvas.fill((171, 171, 171))
-        draw = [point.Draw() for point in Points]
-        game.draw.aalines(Canvas, "green", False, [point.center for point in Points], 1)
+        #draw = [point.Draw() for point in Points]
+        Point1.Draw()
+        Point2.Draw()
+        #game.draw.aalines(Canvas, "green", False, [point.center for point in Points], 1)
         game.display.update()
         clock.tick(FPS)
     return None

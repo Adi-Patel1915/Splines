@@ -24,7 +24,6 @@ class POINT:
 #class ALINE():
 #------------------
 
-
 Canvas = game.display.set_mode((500, 500))
 game.display.set_caption("Canvas")
 #game.display.toggle_fullscreen()
@@ -56,9 +55,6 @@ def dragChecker(Point : POINT, Events):
                     Point.updateHitbox()
 
 def main():
-    # Point_test = POINT([100, 100])
-    # Point_test2 = POINT([200, 200])
-    # Point_test3 = POINT([300, 300])
     Points = [POINT([rand.randint(0, 499), rand.randint(0, 499)]) for i in range(10)]
     FPS = 144
     clock = game.time.Clock()
@@ -69,14 +65,8 @@ def main():
         for event in events:
             if event.type == game.QUIT:
                 switch = False
-        # dragChecker(Point_test, events)
-        # dragChecker(Point_test2, events)
-        # dragChecker(Point_test3, events)
         dragcheckerlst = [dragChecker(point, events) for point in Points]
         Canvas.fill((171, 171, 171))
-        # Point_test.Draw()
-        # Point_test2.Draw()
-        # Point_test3.Draw()
         draw = [point.Draw() for point in Points]
         game.draw.aalines(Canvas, "green", False, [point.center for point in Points], 1)
         game.display.update()

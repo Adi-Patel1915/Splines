@@ -1,4 +1,5 @@
 import pygame as game
+import random as rand
 game.init()
 #Classes-----------
 class POINT:
@@ -18,9 +19,9 @@ class POINT:
         game.draw.circle(Canvas, self.color, tuple(self.center), self.radius)
         game.draw.rect(Canvas, "light green", self.hitbox, 1)
 
+#=====================================
 
-
-
+#class ALINE():
 #------------------
 
 
@@ -55,9 +56,10 @@ def dragChecker(Point : POINT, Events):
                     Point.updateHitbox()
 
 def main():
-    Point_test = POINT([100, 100])
-    Point_test2 = POINT([200, 200])
-    Point_test3 = POINT([300, 300])
+    # Point_test = POINT([100, 100])
+    # Point_test2 = POINT([200, 200])
+    # Point_test3 = POINT([300, 300])
+    Points = [POINT([rand.randint(0, 499), rand.randint(0, 499)]) for i in range(10)]
     FPS = 144
     clock = game.time.Clock()
     switch = True
@@ -67,16 +69,16 @@ def main():
         for event in events:
             if event.type == game.QUIT:
                 switch = False
-        dragChecker(Point_test, events)
-        dragChecker(Point_test2, events)
-        dragChecker(Point_test3, events)
+        # dragChecker(Point_test, events)
+        # dragChecker(Point_test2, events)
+        # dragChecker(Point_test3, events)
+        dragcheckerlst = [dragChecker(point, events) for point in Points]
         Canvas.fill((171, 171, 171))
-        Point_test.Draw()
-        Point_test2.Draw()
-        Point_test3.Draw()
-        game.draw.aaline(Canvas, "red", tuple(Point_test.center), tuple(Point_test2.center), 1)
-        game.draw.aaline(Canvas, "red", tuple(Point_test2.center), tuple(Point_test3.center), 1)
-        game.draw.aaline(Canvas, "red", tuple(Point_test3.center), tuple(Point_test .center), 1)
+        # Point_test.Draw()
+        # Point_test2.Draw()
+        # Point_test3.Draw()
+        draw = [point.Draw() for point in Points]
+        game.draw.aalines(Canvas, "green", False, [point.center for point in Points], 1)
         game.display.update()
         clock.tick(FPS)
     return None

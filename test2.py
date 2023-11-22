@@ -54,20 +54,20 @@ def dragChecker(Point : POINT, Events):
                     Point.updateHitbox()
 
 
-def CollisionDetection(Pt1 : POINT, Pt2 : POINT):
-    Collision = game.Rect.colliderect(Pt1.hitbox, Pt2.hitbox)
-
-    if Collision:
-        Pt1.color = "green"
-        Pt2.color = "green"
-    else:
-        Pt1.color = (16, 12, 8)
-        Pt2.color = (16, 12, 8) 
+def CollisionDetection(Pointlst : list):
+    for point in Pointlst:
+        checklist = [i.hitbox for i in Pointlst]
+        checklist.remove(point.hitbox)
+        if point.hitbox.collidelist(checklist) >= 0:
+            point.color = "red"
+        else:
+            point.color = (16, 12, 8)
 
 def main():
     #Points = [POINT([rand.randint(0, 499), rand.randint(0, 499)]) for i in range(5)]
     Point1 = POINT([100, 100])
     Point2 = POINT([200, 200])
+    Point3 = POINT([300, 300])
     FPS = 144
     clock = game.time.Clock()
     switch = True
@@ -80,11 +80,13 @@ def main():
         #dragcheckerlst = [dragChecker(point, events) for point in Points]
         dragChecker(Point1, events)
         dragChecker(Point2, events)
-        CollisionDetection(Point1, Point2)
+        dragChecker(Point3, events)
+        CollisionDetection([Point1, Point2, Point3])
         Canvas.fill((171, 171, 171))
         #draw = [point.Draw() for point in Points]
         Point1.Draw()
         Point2.Draw()
+        Point3.Draw()
         #game.draw.aalines(Canvas, "green", False, [point.center for point in Points], 1)
         game.display.update()
         clock.tick(FPS)

@@ -1,5 +1,7 @@
 import pygame as game
 
+#================================================
+
 class POINT:
     def __init__(self, center : list, Layer):
         self.layer = Layer

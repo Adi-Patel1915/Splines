@@ -12,7 +12,7 @@ draggingPoint = None
 
 #Points = [POINT([rand.randint(0, 499), rand.randint(0, 499)]) for i in range(5)]
 pointtest = rCls.POINT([250, 250], Canvas)
-pointtest2 = rCls.POINT([0, 0], Canvas)
+pointtest2 = rCls.POINT([10, 10], Canvas)
 Points = [pointtest, pointtest2]
 FPS = 144
 clock = game.time.Clock()
@@ -25,7 +25,7 @@ while switch:
             switch = False
 
     for i in Points:
-        rFunc.DragChecker(i, events, draggingPoint)
+        rFunc.Dragger(i, events, draggingPoint)
         rFunc.CollisionDetection(Points)
     Canvas.fill((171, 171, 171))
     #game.draw.aalines(Canvas, "green", True, [point.center for point in Points], 1)

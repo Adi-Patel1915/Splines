@@ -5,11 +5,11 @@ game.init()
 class POINT:
     def __init__(self, center : list):
         self.center = center
-        self.radius = 10
+        self.radius = 1
         self.draging = False
         self.offsetxpos = 0
         self.offsetypos = 0
-        self.color = (16, 12, 8)
+        self.color = "black"
         self.updateHitbox()
 
     def updateHitbox(self):
@@ -25,7 +25,7 @@ class POINT:
 
 Canvas = game.display.set_mode((500, 500))
 game.display.set_caption("Canvas")
-#game.display.toggle_fullscreen()
+game.display.toggle_fullscreen()
 draggingPoint = None
 
 def dragChecker(Point : POINT, Events):
@@ -61,13 +61,21 @@ def CollisionDetection(Pointlst : list):
         if point.hitbox.collidelist(checklist) >= 0:
             point.color = "red"
         else:
-            point.color = (16, 12, 8)
+            point.color = "black"
 
 def main():
     #Points = [POINT([rand.randint(0, 499), rand.randint(0, 499)]) for i in range(5)]
-    Point1 = POINT([100, 100])
-    Point2 = POINT([200, 200])
-    Point3 = POINT([300, 300])
+    Points = []
+    xc = 100
+    yc = 100
+    point1 = POINT([xc, yc])
+    point2 = POINT([xc + 300, yc])
+    point3 = POINT([xc + 300, yc + 300])
+    point4 = POINT([xc, yc + 300])
+    Points.append(point1)
+    Points.append(point2)
+    Points.append(point3)
+    Points.append(point4)
     FPS = 144
     clock = game.time.Clock()
     switch = True
@@ -77,17 +85,14 @@ def main():
         for event in events:
             if event.type == game.QUIT:
                 switch = False
-        #dragcheckerlst = [dragChecker(point, events) for point in Points]
-        dragChecker(Point1, events)
-        dragChecker(Point2, events)
-        dragChecker(Point3, events)
-        CollisionDetection([Point1, Point2, Point3])
+
+        for i in Points:
+            dragChecker(i, events)
+            CollisionDetection(Points)
         Canvas.fill((171, 171, 171))
-        #draw = [point.Draw() for point in Points]
-        Point1.Draw()
-        Point2.Draw()
-        Point3.Draw()
-        #game.draw.aalines(Canvas, "green", False, [point.center for point in Points], 1)
+        #game.draw.aalines(Canvas, "green", True, [point.center for point in Points], 1)
+        for i in Points:
+            i.Draw()
         game.display.update()
         clock.tick(FPS)
     return None
